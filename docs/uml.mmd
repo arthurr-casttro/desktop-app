@@ -4,27 +4,21 @@ classDiagram
         -_placa: str
         +placa() str
         +tipo()* str
-        +valor_hora()* float
-        +calcular_tarifa(horas: int) float
+        +calcular_tarifa(horas: int)* float
     }
 
     class Carro {
-        +VALOR_HORA: float = 10.0
         +tipo() str
-        +valor_hora() float
+        +calcular_tarifa(horas: int) float
     }
 
     class Moto {
-        +VALOR_HORA: float = 5.0
         +tipo() str
-        +valor_hora() float
+        +calcular_tarifa(horas: int) float
     }
 
     class Caminhonete {
-        +VALOR_HORA: float = 15.0
-        +TAXA_FIXA: float = 5.0
         +tipo() str
-        +valor_hora() float
         +calcular_tarifa(horas: int) float
     }
 
@@ -39,23 +33,17 @@ classDiagram
     class Estacionamento {
         +nome: str
         -_vagas: list~Vaga~
-        -_estadias_ativas: dict~str, RegistroEstadia~
-        +total_vagas() int
-        +vagas() list~Vaga~
         +vagas_livres() list~Vaga~
         +buscar_vaga_livre() Vaga
-        +calcular_valor_saida(veiculo: Veiculo, horas: int) float
         +registrar_entrada(veiculo: Veiculo) RegistroEstadia
         +registrar_saida(placa: str, horas: int) RegistroEstadia
-        +buscar_estadia(placa: str) RegistroEstadia
         +estadias_ativas() list~RegistroEstadia~
+        +calcular_valor_saida(veiculo: Veiculo, horas: int) float
     }
 
     class RegistroEstadia {
         +veiculo: Veiculo
         +vaga: Vaga
-        +encerrada: bool
-        +horas: int
         +valor_pago: float
         +encerrar(estacionamento: Estacionamento, horas: int) float
     }
@@ -65,22 +53,17 @@ classDiagram
     }
 
     class MenuEstacionamento {
-        +estacionamento: Estacionamento
+        -estacionamento: Estacionamento
         +executar() void
-        +registrar_entrada() void
-        +registrar_saida() void
-        +listar_vagas() void
-        +listar_estacionados() void
     }
 
     Veiculo <|-- Carro : heranca
     Veiculo <|-- Moto : heranca
     Veiculo <|-- Caminhonete : heranca
     Estacionamento *-- Vaga : composicao
-    Estacionamento o-- RegistroEstadia : agregacao
+    Estacionamento --> RegistroEstadia : associacao
     RegistroEstadia --> Veiculo : associacao
     RegistroEstadia --> Vaga : associacao
-    RegistroEstadia ..> Estacionamento : dependencia
     GeradorRecibo ..> RegistroEstadia : dependencia
     MenuEstacionamento --> Estacionamento : associacao
     MenuEstacionamento ..> GeradorRecibo : dependencia
